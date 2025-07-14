@@ -4,11 +4,6 @@ type FetchOptions = RequestInit & {
   headers?: Record<string, string>;
 };
 
-const defaultHeaders: Record<string, string> = {
-  "Content-Type": "application/json",
-  Accept: "application/json",
-};
-
 export const useHttpClientFactory = () => {
   const createFetch = () => {
     return async <T = unknown>(
@@ -18,7 +13,6 @@ export const useHttpClientFactory = () => {
       const finalOptions: FetchOptions = {
         ...options,
         headers: {
-          ...defaultHeaders,
           ...options.headers,
         },
       };
