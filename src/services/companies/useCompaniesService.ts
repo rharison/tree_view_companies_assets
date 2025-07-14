@@ -17,7 +17,7 @@ export const useCompaniesService = () => {
   }
 
   async function getAssetsByCompanieId(companyId: string) {
-    return await fetch<Asset[]>(`${BASE_PATH}/${companyId}/locations`);
+    return await fetch<Asset[]>(`${BASE_PATH}/${companyId}/assets`);
   }
 
   return {
