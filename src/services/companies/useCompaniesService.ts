@@ -1,6 +1,6 @@
-import type { Asset } from "../../commons/types/assets";
-import type { Company } from "../../commons/types/companies";
-import type { Location } from "../../commons/types/locations";
+import type { Asset } from "@commons/types/assets";
+import type { Company } from "@commons/types/companies";
+import type { Location } from "@commons/types/locations";
 import { useHttpClientFactory } from "../useHttpClientFactory";
 
 const BASE_PATH = "/companies";
