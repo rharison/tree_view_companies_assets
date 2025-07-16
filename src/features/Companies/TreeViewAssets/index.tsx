@@ -1,3 +1,9 @@
+import { TreeViewAssetsProvider } from "./contexts/TreeViewAssetsContext";
+
 export const TreeViewAssets = () => {
-  return <div>Tree View Assets</div>;
+  return (
+    <TreeViewAssetsProvider>
+      <div>Tree View Assets</div>
+    </TreeViewAssetsProvider>
+  );
 };

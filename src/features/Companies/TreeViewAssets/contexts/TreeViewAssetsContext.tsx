@@ -1,34 +1,46 @@
-/* eslint-disable react-refresh/only-export-components */
-import { createContext, useContext } from "react";
+import { createContext, useContext, useState } from "react";
 
 type TreeViewAssetsContextProps = {
-  handleRefetchData: () => Promise<void>;
+  selectedCompanyId: string | null;
+  handleSelectCompany: (companyId: string) => void;
 };
 
 type TreeViewAssetsProviderProps = {
   children: React.ReactNode;
 };
 
-export const TreeViewAssetsContext = createContext(
-  {} as TreeViewAssetsContextProps
+const TreeViewAssetsContext = createContext<TreeViewAssetsContextProps | null>(
+  null
 );
 
-export const TreeViewAssetsProvider = ({
+export function TreeViewAssetsProvider({
   children,
-}: TreeViewAssetsProviderProps) => {
+}: TreeViewAssetsProviderProps) {
+  const [selectedCompanyId, setSelectedCompanyId] = useState<string | null>(
+    null
+  );
+
+  function handleSelectCompany(companyId: string) {
+    setSelectedCompanyId(companyId);
+  }
+
   return (
     <TreeViewAssetsContext.Provider
-      value={{
-        handleRefetchData: async () => {
-          console.log("Refetching...");
-        },
-      }}
+      value={{ selectedCompanyId, handleSelectCompany }}
     >
       {children}
     </TreeViewAssetsContext.Provider>
   );
-};
+}
 
 export const useTreeViewAssetsFormContext = () => {
-  return useContext(TreeViewAssetsContext);
+  const context = useContext(TreeViewAssetsContext);
+
+  if (!context) {
+    throw new Error(
+      "useTreeViewAssetsFormContext must be used within a TreeViewAssetsProvider"
+    );
+  }
+
+  return context;
 };
