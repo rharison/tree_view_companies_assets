@@ -2,7 +2,7 @@ import { TreeItemType, type TreeItem } from "@commons/types/tree-view-assets";
 import type { Location } from "@commons/types/locations";
 import type { Asset } from "@src/commons/types/assets";
 
-const KEY_WITHOUT_LOCATION = "without-location";
+export const KEY_WITHOUT_LOCATION = "without-location";
 
 const sortTreeItems = (items: TreeItem[]): TreeItem[] => {
   return items
@@ -68,44 +68,59 @@ export const mapLocationsTreeItem = (
 export const mapAssetsTreeItems = (
   assets: Asset[]
 ): Map<string, TreeItem[]> => {
-  return assets
+  const aggrupedAssets = assets
     .sort((a, b) => {
       if (!a.parentId && b.parentId) return -1;
       if (a.parentId && !b.parentId) return 1;
+
       return 0;
     })
-    .reduce((map, { id, name, parentId, sensorType, locationId, ...rest }) => {
-      const node: TreeItem = {
-        id,
-        name,
-        type: sensorType ? TreeItemType.COMPONENT : TreeItemType.ASSET,
-        children: [],
-        locationId,
-        ...rest,
-      };
+    .reduce(
+      (
+        acc: TreeItem[],
+        { id, name, parentId, sensorType, locationId, ...rest }
+      ) => {
+        const node: TreeItem = {
+          id,
+          name,
+          type: sensorType ? TreeItemType.COMPONENT : TreeItemType.ASSET,
+          children: [],
+          locationId,
+          sensorType,
+          ...rest,
+        };
 
-      const locId = locationId || KEY_WITHOUT_LOCATION;
-
-      if (!map.has(locId)) {
-        map.set(locId, []);
-      }
-
-      const items = map.get(locId)!;
-
-      if (!parentId) {
-        items.push(node);
-      } else {
-        const parent = items.find((item) => item.id === parentId);
-        if (parent) {
-          parent.children.push(node);
+        if (!parentId) {
+          acc.push(node);
         } else {
-          items.push(node);
+          const parent = acc.find((item) => item.id === parentId);
+          if (parent) {
+            parent.children.push(node);
+          } else {
+            acc.push(node);
+          }
         }
-      }
 
-      return map;
-    }, new Map<string, TreeItem[]>());
+        return acc;
+      },
+      []
+    );
+
+  const map = new Map<string, TreeItem[]>();
+
+  aggrupedAssets.forEach((item) => {
+    const locId = item.locationId || KEY_WITHOUT_LOCATION;
+
+    if (!map.has(locId)) {
+      map.set(locId, []);
+    }
+
+    map.get(locId)!.push(item);
+  });
+
+  return map;
 };
+
 export const mapTree = (locations: Location[], assets: Asset[]): TreeItem[] => {
   const mappedAssets = mapAssetsTreeItems(assets);
   return mapLocationsTreeItem(locations, mappedAssets);
