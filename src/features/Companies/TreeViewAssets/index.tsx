@@ -1,13 +1,12 @@
+import { AssetsViewCard } from "./components/AssetsViewCard";
 import { Header } from "./components/Header";
-import { PageLayout } from "./components/PageLayout";
 import { TreeViewAssetsProvider } from "./contexts/TreeViewAssetsContext";
 
 export const TreeViewAssets = () => {
   return (
     <TreeViewAssetsProvider>
-      <PageLayout>
-        <Header />
-      </PageLayout>
+      <Header />
+      <AssetsViewCard />
     </TreeViewAssetsProvider>
   );
 };
