@@ -4,6 +4,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 type TreeViewAssetsContextProps = {
   selectedCompanyId: string | null;
+  selectedCompanyName: string | null;
   companies: Company[];
   handleSelectCompany: (companyId: string) => void;
 };
@@ -21,9 +22,7 @@ export function TreeViewAssetsProvider({
 }: TreeViewAssetsProviderProps) {
   const [isFetchingCompanies, setIsFetchingCompanies] = useState(true);
   const [companies, setCompanies] = useState<Company[]>([]);
-  const [selectedCompanyId, setSelectedCompanyId] = useState<string | null>(
-    null
-  );
+  const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
 
   const { getCompanies } = useCompaniesService();
 
@@ -37,7 +36,7 @@ export function TreeViewAssetsProvider({
 
       setCompanies(result);
 
-      if (result.length > 0) setSelectedCompanyId(result[0].id);
+      if (result.length > 0) setSelectedCompany(result[0]);
     } catch (error) {
       console.error("Failed to fetch companies:", error);
     } finally {
@@ -46,24 +45,35 @@ export function TreeViewAssetsProvider({
   }
 
   function handleSelectCompany(companyId: string) {
-    setSelectedCompanyId(companyId);
+    const company = companies.find((c) => c.id === companyId);
+
+    if (!company) {
+      throw new Error(`Company with id ${companyId} not found`);
+    }
+
+    setSelectedCompany(company);
   }
 
   return (
     <TreeViewAssetsContext.Provider
-      value={{ selectedCompanyId, companies, handleSelectCompany }}
+      value={{
+        selectedCompanyId: selectedCompany?.id || null,
+        selectedCompanyName: selectedCompany?.name || null,
+        companies,
+        handleSelectCompany,
+      }}
     >
       {children}
     </TreeViewAssetsContext.Provider>
   );
 }
 
-export const useTreeViewAssetsFormContext = () => {
+export const useTreeViewAssetsContext = () => {
   const context = useContext(TreeViewAssetsContext);
 
   if (!context) {
     throw new Error(
-      "useTreeViewAssetsFormContext must be used within a TreeViewAssetsProvider"
+      "useTreeViewAssetsContext must be used within a TreeViewAssetsProvider"
     );
   }
 
