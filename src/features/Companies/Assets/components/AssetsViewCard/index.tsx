@@ -4,11 +4,9 @@ import { useAssetsContext } from "../../contexts/TreeViewAssetsContext";
 import { FilterButton } from "../FilterButton";
 import { TreeViewAssets } from "../TreeViewAssets";
 import { AssetDetails } from "../AssetDetails";
-import { useAssetsViewCardController } from "./useAssetsViewCardController";
 
 export const AssetsViewCard = () => {
   const { selectedCompanyName } = useAssetsContext();
-  const { treeData } = useAssetsViewCardController();
 
   return (
     <div className="flex flex-col w-full bg-[#dee7ec] h-[calc(100vh-48px)] p-2 justify-center items-center">
@@ -39,7 +37,7 @@ export const AssetsViewCard = () => {
           </div>
         </header>
         <div className="flex h-full gap-2">
-          <TreeViewAssets data={treeData} />
+          <TreeViewAssets />
           <AssetDetails />
         </div>
       </div>
