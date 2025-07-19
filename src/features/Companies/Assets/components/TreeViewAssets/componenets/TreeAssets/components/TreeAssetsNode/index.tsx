@@ -1,9 +1,11 @@
 import Arrow from "@src/assets/icons/Arrow";
 import type { TreeItem } from "@src/commons/types/tree-view-assets";
-import { resolveIconByTreeItemType } from "../../utils/resolveIconByTreeItemType";
-import { resolveIconFeedbackStatusComponent } from "../../utils/resolveIconFeedbackStatusComponent";
 import { useTreeAssetsNodeController } from "./hooks/useTreeAssetsNodeController";
 import { cn } from "@src/commons/utils/className";
+import {
+  resolveIconByTreeItemType,
+  resolveIconFeedbackStatusComponent,
+} from "../../utils/iconResolver";
 
 type TreeAssetsNodeProps = {
   item: TreeItem;
@@ -17,8 +19,6 @@ export const TreeAssetsNode = ({
   const { expandable, open, toggleOpen } = useTreeAssetsNodeController(item);
   const icon = resolveIconByTreeItemType(item.type);
   const feedbackIcon = resolveIconFeedbackStatusComponent(item);
-
-  console.log("hasExpandableItems", hasExpandableItems);
 
   return (
     <button

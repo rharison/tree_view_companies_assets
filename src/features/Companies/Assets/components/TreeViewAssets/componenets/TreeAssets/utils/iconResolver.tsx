@@ -1,7 +1,26 @@
 import AssetStatusFeedback from "@src/assets/icons/AssetStatusFeedback";
 import Bolt from "@src/assets/icons/Bolt";
+import Codepen from "@src/assets/icons/Codepen";
+import Cube from "@src/assets/icons/Cube";
+import Location from "@src/assets/icons/Location";
 import { AssetStatus, SensorType } from "@src/commons/types/assets";
-import { type TreeItem } from "@src/commons/types/tree-view-assets";
+import {
+  TreeItemType,
+  type TreeItem,
+} from "@src/commons/types/tree-view-assets";
+
+export function resolveIconByTreeItemType(type: TreeItemType) {
+  switch (type) {
+    case TreeItemType.LOCATION:
+      return <Location />;
+    case TreeItemType.ASSET:
+      return <Cube />;
+    case TreeItemType.COMPONENT:
+      return <Codepen />;
+    default:
+      return <>NA</>;
+  }
+}
 
 export function resolveIconFeedbackStatusComponent(treeItem: TreeItem) {
   if (!treeItem.sensorType || !treeItem.status) return null;
