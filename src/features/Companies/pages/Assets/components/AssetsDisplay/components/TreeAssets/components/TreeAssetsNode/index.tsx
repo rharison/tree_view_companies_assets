@@ -21,10 +21,10 @@ export const TreeAssetsNode = ({
   hasExpandableItems,
   level = 1,
 }: TreeAssetsNodeProps) => {
-  const { expandable, hasChildren, open, handleClickTreeItem } =
+  const { expandable, hasChildren, open, isSelected, handleClickTreeItem } =
     useTreeAssetsNodeController(item);
 
-  const icon = resolveIconByTreeItemType(item.type);
+  const icon = resolveIconByTreeItemType(item.type, isSelected);
   const feedbackIcon = resolveIconFeedbackStatusComponent(item);
 
   return (
@@ -32,7 +32,8 @@ export const TreeAssetsNode = ({
       <button
         className={cn(
           "flex items-center gap-1 cursor-pointer hover:bg-[#f0f4f7] p-1 rounded",
-          !expandable && hasExpandableItems ? "pl-1" : `pl-2`
+          !expandable && hasExpandableItems ? "pl-1" : `pl-2`,
+          isSelected && "bg-[#2188FF] text-white hover:bg-[#2188FF]"
         )}
         onClick={() => handleClickTreeItem(item)}
       >
