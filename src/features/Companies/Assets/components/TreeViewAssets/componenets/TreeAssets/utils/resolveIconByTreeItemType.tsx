@@ -3,7 +3,7 @@ import Cube from "@src/assets/icons/Cube";
 import Location from "@src/assets/icons/Location";
 import { TreeItemType } from "@src/commons/types/tree-view-assets";
 
-export function resolveIconsByTreeItemType(type: TreeItemType) {
+export function resolveIconByTreeItemType(type: TreeItemType) {
   switch (type) {
     case TreeItemType.LOCATION:
       return <Location />;
