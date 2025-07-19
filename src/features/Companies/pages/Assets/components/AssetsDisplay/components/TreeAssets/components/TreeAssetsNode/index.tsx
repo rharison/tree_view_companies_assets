@@ -1,12 +1,12 @@
 import Arrow from "@src/assets/icons/Arrow";
+import { Fade } from "@src/commons/components/Fade";
 import type { TreeItem } from "@src/commons/types/tree-view-assets";
-import { useTreeAssetsNodeController } from "./hooks/useTreeAssetsNodeController";
 import { cn } from "@src/commons/utils/className";
 import {
   resolveIconByTreeItemType,
   resolveIconFeedbackStatusComponent,
 } from "../../utils/iconResolver";
-import { Fade } from "@src/commons/components/Fade";
+import { useTreeAssetsNodeController } from "./hooks/useTreeAssetsNodeController";
 
 type TreeAssetsNodeProps = {
   item: TreeItem;
@@ -21,8 +21,9 @@ export const TreeAssetsNode = ({
   hasExpandableItems,
   level = 1,
 }: TreeAssetsNodeProps) => {
-  const { expandable, hasChildren, selectable, open, toggleOpen } =
+  const { expandable, hasChildren, open, handleClickTreeItem } =
     useTreeAssetsNodeController(item);
+
   const icon = resolveIconByTreeItemType(item.type);
   const feedbackIcon = resolveIconFeedbackStatusComponent(item);
 
@@ -33,7 +34,7 @@ export const TreeAssetsNode = ({
           "flex items-center gap-1 cursor-pointer hover:bg-[#f0f4f7] p-1 rounded",
           !expandable && hasExpandableItems ? "pl-1" : `pl-2`
         )}
-        onClick={toggleOpen}
+        onClick={() => handleClickTreeItem(item)}
       >
         {expandable && <Arrow up={!open} />}
         {icon}

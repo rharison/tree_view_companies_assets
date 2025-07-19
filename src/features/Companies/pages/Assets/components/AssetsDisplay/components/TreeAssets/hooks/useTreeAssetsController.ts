@@ -1,12 +1,13 @@
-import type { TreeItem } from "@src/commons/types/tree-view-assets";
-
+import { useAssetsContext } from "@src/features/Companies/pages/Assets/contexts/AssetsContext";
 import { useMemo } from "react";
 import { checkHasExpandableItems } from "../../../utils/expandableItems";
 
-export const useTreeAssetsController = (data: TreeItem[]) => {
-  const hasExpandableItems = useMemo(() => {
-    return checkHasExpandableItems(data);
-  }, [data]);
+export const useTreeAssetsController = () => {
+  const { treeData } = useAssetsContext();
 
-  return { hasExpandableItems };
+  const hasExpandableItems = useMemo(() => {
+    return checkHasExpandableItems(treeData);
+  }, [treeData]);
+
+  return { treeData, hasExpandableItems };
 };
