@@ -24,14 +24,14 @@ export const TreeAssetsNode = ({
   const { expandable, open, toggleOpen } = useTreeAssetsNodeController(item);
   const icon = resolveIconByTreeItemType(item.type);
   const feedbackIcon = resolveIconFeedbackStatusComponent(item);
+  const paddingLeft = LEVEL_IDENT_MULTIPLIER * 0.5 * level;
 
   return (
     <div className="flex flex-col">
       <button
         className={cn(
           "flex items-center gap-1 cursor-pointer hover:bg-[#f0f4f7] p-1 rounded",
-          !expandable && hasExpandableItems && "pl-4.5",
-          `pl-[calc(1rem*0.5*${LEVEL_IDENT_MULTIPLIER}*${level})]`
+          !expandable && hasExpandableItems ? "pl-0" : `pl-[${paddingLeft}rem]`
         )}
         onClick={toggleOpen}
       >
