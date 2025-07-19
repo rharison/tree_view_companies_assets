@@ -2,7 +2,7 @@ type ArrowDownProps = {
   up?: boolean;
 };
 
-const ArrowDown = ({ up }: ArrowDownProps) => (
+const Arrow = ({ up }: ArrowDownProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="10"
@@ -20,4 +20,4 @@ const ArrowDown = ({ up }: ArrowDownProps) => (
   </svg>
 );
 
-export default ArrowDown;
+export default Arrow;
