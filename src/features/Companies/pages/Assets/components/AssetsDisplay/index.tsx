@@ -39,7 +39,7 @@ export const AssetsDisplay = () => {
               />
             </div>
           </header>
-          <div className="flex h-full gap-2">
+          <div className="flex h-full gap-2 overflow-hidden">
             <div className="flex flex-col w-[40%] h-full border border-[#D8DFE6] rounded-[2px]">
               <InputSearch />
               <TreeAssets />
