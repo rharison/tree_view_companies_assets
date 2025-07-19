@@ -2,24 +2,20 @@ import type { Company } from "@src/commons/types/companies";
 import { useCompaniesService } from "@src/services/companies/useCompaniesService";
 import { createContext, useContext, useEffect, useState } from "react";
 
-type TreeViewAssetsContextProps = {
+type AssetsContextProps = {
   selectedCompanyId: string | null;
   selectedCompanyName: string | null;
   companies: Company[];
   handleSelectCompany: (companyId: string) => void;
 };
 
-type TreeViewAssetsProviderProps = {
+type AssetsProviderProps = {
   children: React.ReactNode;
 };
 
-const TreeViewAssetsContext = createContext<TreeViewAssetsContextProps | null>(
-  null
-);
+const AssetsContext = createContext<AssetsContextProps | null>(null);
 
-export function TreeViewAssetsProvider({
-  children,
-}: TreeViewAssetsProviderProps) {
+export function AssetsProvider({ children }: AssetsProviderProps) {
   const [isFetchingCompanies, setIsFetchingCompanies] = useState(true);
   const [companies, setCompanies] = useState<Company[]>([]);
   const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
@@ -55,7 +51,7 @@ export function TreeViewAssetsProvider({
   }
 
   return (
-    <TreeViewAssetsContext.Provider
+    <AssetsContext.Provider
       value={{
         selectedCompanyId: selectedCompany?.id || null,
         selectedCompanyName: selectedCompany?.name || null,
@@ -64,17 +60,15 @@ export function TreeViewAssetsProvider({
       }}
     >
       {children}
-    </TreeViewAssetsContext.Provider>
+    </AssetsContext.Provider>
   );
 }
 
-export const useTreeViewAssetsContext = () => {
-  const context = useContext(TreeViewAssetsContext);
+export const useAssetsContext = () => {
+  const context = useContext(AssetsContext);
 
   if (!context) {
-    throw new Error(
-      "useTreeViewAssetsContext must be used within a TreeViewAssetsProvider"
-    );
+    throw new Error("useAssetsContext must be used within a AssetsProvider");
   }
 
   return context;

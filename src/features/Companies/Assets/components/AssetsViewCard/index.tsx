@@ -1,10 +1,10 @@
 import Alert from "@src/assets/icons/Alert";
 import Thuderbolt from "@src/assets/icons/Thuderbolt";
-import { useTreeViewAssetsContext } from "../../contexts/TreeViewAssetsContext";
+import { useAssetsContext } from "../../contexts/TreeViewAssetsContext";
 import { FilterButton } from "../FilterButton";
 
 export const AssetsViewCard = () => {
-  const { selectedCompanyName } = useTreeViewAssetsContext();
+  const { selectedCompanyName } = useAssetsContext();
 
   return (
     <div className="flex flex-col w-full bg-[#dee7ec] h-[calc(100vh-48px)] p-2 justify-center items-center">

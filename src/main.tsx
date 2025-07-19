@@ -2,10 +2,10 @@ import "./index.css";
 
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { TreeViewAssets } from "@features/Companies/TreeViewAssets";
+import { Assets } from "@src/features/Companies/Assets";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <TreeViewAssets />
+    <Assets />
   </StrictMode>
 );

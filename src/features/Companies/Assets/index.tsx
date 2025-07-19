@@ -1,12 +1,12 @@
 import { AssetsViewCard } from "./components/AssetsViewCard";
 import { Header } from "./components/Header";
-import { TreeViewAssetsProvider } from "./contexts/TreeViewAssetsContext";
+import { AssetsProvider } from "./contexts/TreeViewAssetsContext";
 
-export const TreeViewAssets = () => {
+export const Assets = () => {
   return (
-    <TreeViewAssetsProvider>
+    <AssetsProvider>
       <Header />
       <AssetsViewCard />
-    </TreeViewAssetsProvider>
+    </AssetsProvider>
   );
 };
