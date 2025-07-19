@@ -14,7 +14,7 @@ type TreeAssetsNodeProps = {
   level?: number;
 };
 
-const LEVEL_IDENT_MULTIPLIER = 1.5;
+const IDENTITY_SIZE_PIXEL = 14;
 
 export const TreeAssetsNode = ({
   item,
@@ -24,25 +24,32 @@ export const TreeAssetsNode = ({
   const { expandable, open, toggleOpen } = useTreeAssetsNodeController(item);
   const icon = resolveIconByTreeItemType(item.type);
   const feedbackIcon = resolveIconFeedbackStatusComponent(item);
-  const paddingLeft = LEVEL_IDENT_MULTIPLIER * 0.5 * level;
+  const hasChildren = item.children && item.children.length > 0;
 
   return (
     <div className="flex flex-col">
       <button
         className={cn(
           "flex items-center gap-1 cursor-pointer hover:bg-[#f0f4f7] p-1 rounded",
-          !expandable && hasExpandableItems ? "pl-0" : `pl-[${paddingLeft}rem]`
+          !expandable && hasExpandableItems ? "pl-1" : `pl-2`
         )}
         onClick={toggleOpen}
       >
         {expandable && <Arrow up={!open} />}
         {icon}
-        <span className="text-[#17192D] text-sm px-1">{item.name}</span>
+        <span className="text-[rgba(0, 0, 0, 0.06)] text-sm px-1">
+          {item.name}
+        </span>
         {feedbackIcon}
       </button>
-      {item.children && item.children.length > 0 && (
+
+      {hasChildren && (
         <Fade in={open}>
-          <div className="pl-4">
+          <div
+            style={{
+              marginLeft: `${IDENTITY_SIZE_PIXEL * level}px`,
+            }}
+          >
             {item.children.map((child) => (
               <TreeAssetsNode
                 key={child.id}
