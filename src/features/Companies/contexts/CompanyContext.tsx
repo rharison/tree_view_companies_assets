@@ -2,20 +2,20 @@ import type { Company } from "@src/commons/types/companies";
 import { useCompaniesService } from "@src/services/companies/useCompaniesService";
 import { createContext, useContext, useEffect, useState } from "react";
 
-type AssetsContextProps = {
+type CompanyContextProps = {
   selectedCompanyId: string | null;
   selectedCompanyName: string | null;
   companies: Company[];
   handleSelectCompany: (companyId: string) => void;
 };
 
-type AssetsProviderProps = {
+type CompanyProviderProps = {
   children: React.ReactNode;
 };
 
-const AssetsContext = createContext<AssetsContextProps | null>(null);
+const CompanyContext = createContext<CompanyContextProps | null>(null);
 
-export function AssetsProvider({ children }: AssetsProviderProps) {
+export function CompanyProvider({ children }: CompanyProviderProps) {
   const [isFetchingCompanies, setIsFetchingCompanies] = useState(true);
   const [companies, setCompanies] = useState<Company[]>([]);
   const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
@@ -51,7 +51,7 @@ export function AssetsProvider({ children }: AssetsProviderProps) {
   }
 
   return (
-    <AssetsContext.Provider
+    <CompanyContext.Provider
       value={{
         selectedCompanyId: selectedCompany?.id || null,
         selectedCompanyName: selectedCompany?.name || null,
@@ -60,15 +60,15 @@ export function AssetsProvider({ children }: AssetsProviderProps) {
       }}
     >
       {children}
-    </AssetsContext.Provider>
+    </CompanyContext.Provider>
   );
 }
 
-export const useAssetsContext = () => {
-  const context = useContext(AssetsContext);
+export const useCompanyContext = () => {
+  const context = useContext(CompanyContext);
 
   if (!context) {
-    throw new Error("useAssetsContext must be used within a AssetsProvider");
+    throw new Error("useCompanyContext must be used within a CompanyProvider");
   }
 
   return context;

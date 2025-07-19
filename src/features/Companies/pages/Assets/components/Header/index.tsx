@@ -1,11 +1,11 @@
 import Gold from "@src/assets/icons/Gold";
 import LogoTractian from "@src/assets/images/LogoTractian";
 import { cn } from "@src/commons/utils/className";
-import { useAssetsContext } from "../../contexts/TreeViewAssetsContext";
+import { useCompanyContext } from "../../../../contexts/CompanyContext";
 
 export const Header = () => {
   const { companies, selectedCompanyId, handleSelectCompany } =
-    useAssetsContext();
+    useCompanyContext();
 
   return (
     <nav className="bg-[#17192D] flex h-12 justify-between items-center py-3 px-4">

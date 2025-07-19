@@ -4,9 +4,10 @@ import { useTreeAssetsController } from "./hooks/useTreeAssetsController";
 
 type TreeAssetsProps = {
   data: TreeItem[];
+  onSelectItem: (item: TreeItem) => void;
 };
 
-export const TreeAssets = ({ data }: TreeAssetsProps) => {
+export const TreeAssets = ({ data, onSelectItem }: TreeAssetsProps) => {
   const { hasExpandableItems } = useTreeAssetsController(data);
 
   return (
