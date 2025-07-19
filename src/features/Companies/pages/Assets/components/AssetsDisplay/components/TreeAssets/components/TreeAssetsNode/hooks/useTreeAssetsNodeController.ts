@@ -4,7 +4,7 @@ import { useState } from "react";
 
 export const useTreeAssetsNodeController = (item: TreeItem) => {
   const [open, setOpen] = useState(false);
-  const { handleSelectTreeItem } = useAssetsContext();
+  const { handleSelectTreeItem, selectTreeItem } = useAssetsContext();
 
   function checkHasChildren(item: TreeItem) {
     return item.children && item.children.length > 0;
@@ -30,6 +30,7 @@ export const useTreeAssetsNodeController = (item: TreeItem) => {
   const hasChildren = checkHasChildren(item);
 
   return {
+    isSelected: selectTreeItem?.id === item.id,
     hasChildren,
     expandable: hasChildren,
     open,
