@@ -21,10 +21,10 @@ export const TreeAssetsNode = ({
   hasExpandableItems,
   level = 1,
 }: TreeAssetsNodeProps) => {
-  const { expandable, open, toggleOpen } = useTreeAssetsNodeController(item);
+  const { expandable, hasChildren, selectable, open, toggleOpen } =
+    useTreeAssetsNodeController(item);
   const icon = resolveIconByTreeItemType(item.type);
   const feedbackIcon = resolveIconFeedbackStatusComponent(item);
-  const hasChildren = item.children && item.children.length > 0;
 
   return (
     <div className="flex flex-col">

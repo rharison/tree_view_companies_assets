@@ -1,12 +1,15 @@
 import Alert from "@src/assets/icons/Alert";
 import Thuderbolt from "@src/assets/icons/Thuderbolt";
 import { useAssetsContext } from "../../contexts/TreeViewAssetsContext";
-import { FilterButton } from "../FilterButton";
-import { TreeViewAssets } from "../TreeViewAssets";
 import { AssetDetails } from "../AssetDetails";
+import { FilterButton } from "../FilterButton";
+import { InputSearch } from "./componenets/InputSearch";
+import { TreeAssets } from "./componenets/TreeAssets";
+import { useAssetsViewController } from "./hooks/useAssetsViewController";
 
 export const AssetsViewCard = () => {
   const { selectedCompanyName } = useAssetsContext();
+  const { treeData } = useAssetsViewController();
 
   return (
     <div className="flex flex-col w-full bg-[#dee7ec] h-[calc(100vh-48px)] p-2 justify-center items-center">
@@ -37,7 +40,11 @@ export const AssetsViewCard = () => {
           </div>
         </header>
         <div className="flex h-full gap-2">
-          <TreeViewAssets />
+          <div className="flex flex-col w-[40%] h-full border border-[#D8DFE6] rounded-[2px]">
+            <InputSearch />
+            <TreeAssets data={treeData} />
+          </div>
+
           <AssetDetails />
         </div>
       </div>

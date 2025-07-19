@@ -3,14 +3,16 @@ import { useState } from "react";
 
 export const useTreeAssetsNodeController = (item: TreeItem) => {
   const [open, setOpen] = useState(false);
-  const expandable = item.children && item.children.length > 0;
+  const hasChildren = item.children && item.children.length > 0;
 
   function toggleOpen() {
     setOpen((prevOpen) => !prevOpen);
   }
 
   return {
-    expandable,
+    hasChildren,
+    expandable: hasChildren,
+    selectable: Boolean(item.sensorType),
     open,
     toggleOpen,
   };

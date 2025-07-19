@@ -1,6 +1,7 @@
 import type { TreeItem } from "@src/commons/types/tree-view-assets";
-import { checkHasExpandableItems } from "../../../utils/expandableItems";
+
 import { useMemo } from "react";
+import { checkHasExpandableItems } from "../../../utils/expandableItems";
 
 export const useTreeAssetsController = (data: TreeItem[]) => {
   const hasExpandableItems = useMemo(() => {

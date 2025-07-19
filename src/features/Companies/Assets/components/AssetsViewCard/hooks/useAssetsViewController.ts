@@ -1,5 +1,5 @@
 import { treeDataMock } from "@commons/mocks/treeData";
 
-export const useTreeViewAssetsController = () => {
+export const useAssetsViewController = () => {
   return { treeData: treeDataMock };
 };
