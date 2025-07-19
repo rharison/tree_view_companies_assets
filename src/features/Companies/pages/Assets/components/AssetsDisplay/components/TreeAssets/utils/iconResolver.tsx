@@ -9,14 +9,19 @@ import {
   type TreeItem,
 } from "@src/commons/types/tree-view-assets";
 
-export function resolveIconByTreeItemType(type: TreeItemType) {
+export function resolveIconByTreeItemType(
+  type: TreeItemType,
+  isSelected: boolean
+) {
+  const fillColor = isSelected ? "#FFFFFF" : "#2188FF";
+
   switch (type) {
     case TreeItemType.LOCATION:
-      return <Location />;
+      return <Location fill={fillColor} />;
     case TreeItemType.ASSET:
-      return <Cube />;
+      return <Cube fill={fillColor} />;
     case TreeItemType.COMPONENT:
-      return <Codepen />;
+      return <Codepen fill={fillColor} />;
     default:
       return <>NA</>;
   }
