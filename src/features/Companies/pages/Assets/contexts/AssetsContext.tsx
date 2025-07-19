@@ -1,6 +1,10 @@
-import { treeDataMock } from "@src/commons/mocks/treeData";
+import type { Asset } from "@src/commons/types/assets";
+import type { Location } from "@src/commons/types/locations";
 import type { TreeItem } from "@src/commons/types/tree-view-assets";
-import { createContext, useContext, useState } from "react";
+import { useCompanyContext } from "@src/features/Companies/contexts/CompanyContext";
+import { useCompaniesService } from "@src/services/companies/useCompaniesService";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { mapTree } from "../utils/mapper";
 
 type AssetsContextProps = {
   selectTreeItem: TreeItem | null;
@@ -16,6 +20,24 @@ const AssetsContext = createContext<AssetsContextProps | null>(null);
 
 export function AssetsProvider({ children }: AssetsProviderProps) {
   const [selectTreeItem, setSelectedTreeItem] = useState<TreeItem | null>(null);
+  const [locations, setLocations] = useState<Location[]>([]);
+  const [assets, setAssets] = useState<Asset[]>([]);
+  const { selectedCompanyId } = useCompanyContext();
+  const { getLocationsByCompanieId, getAssetsByCompanieId } =
+    useCompaniesService();
+
+  useEffect(() => {
+    if (!selectedCompanyId) return;
+    (async () => {
+      const [locations, assets] = await Promise.all([
+        getLocationsByCompanieId(selectedCompanyId),
+        getAssetsByCompanieId(selectedCompanyId),
+      ]);
+
+      setLocations(locations);
+      setAssets(assets);
+    })();
+  }, [selectedCompanyId]);
 
   function handleSelectTreeItem(item: TreeItem) {
     if (selectTreeItem?.id === item.id) {
@@ -25,10 +47,14 @@ export function AssetsProvider({ children }: AssetsProviderProps) {
     setSelectedTreeItem(item);
   }
 
+  const treeData = useMemo(() => {
+    return mapTree(locations, assets);
+  }, [locations, assets]);
+
   return (
     <AssetsContext.Provider
       value={{
-        treeData: treeDataMock,
+        treeData,
         selectTreeItem,
         handleSelectTreeItem,
       }}
