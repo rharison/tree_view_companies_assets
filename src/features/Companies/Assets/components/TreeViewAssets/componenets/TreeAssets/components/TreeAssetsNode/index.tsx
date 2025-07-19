@@ -23,8 +23,8 @@ export const TreeAssetsNode = ({
   return (
     <button
       className={cn(
-        "flex items-center gap-1 cursor-pointer  hover:bg-[#f0f4f7] p-1 rounded",
-        !expandable && hasExpandableItems && "pl-4"
+        "flex items-center gap-1 cursor-pointer hover:bg-[#f0f4f7] p-1 rounded",
+        !expandable && hasExpandableItems && "pl-4.5"
       )}
       onClick={toggleOpen}
     >
