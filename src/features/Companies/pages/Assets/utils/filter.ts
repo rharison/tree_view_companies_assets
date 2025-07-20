@@ -21,3 +21,12 @@ export function filterTree(
     })
     .filter((node): node is TreeItem => node !== null);
 }
+
+export function isPresentInTree(nodes: TreeItem[], itemId: string): boolean {
+  return nodes.some((node) => {
+    if (node.id === itemId) {
+      return true;
+    }
+    return isPresentInTree(node.children, itemId);
+  });
+}
