@@ -1,69 +1,35 @@
-# React + TypeScript + Vite
+# Tree Assets Company Viewer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Demo:
 
-Currently, two official plugins are available:
+![Application demo](public/run-exemple.gif)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+[Página de demonstração](https://tree-assets.netlify.app)
 
-## Expanding the ESLint configuration
+## Pontos que eu melhoria/faria se tivesse mais tempo:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Salvar os filtros de uma forma que ao atualizar a página eles sejam mantidos, como salvar no localStorage ou utilizando a URL;
+- Criar mais testes unitários, incluíndo teste de integração e renderização;
+- Ajustar a responsividade para a aplicação ter uma boa UX em diversos tamanhos de tela;
+- Melhorar a captura e exibição de possíveis erros;
+- Utilizar virtualização de listas na árvore, para evitar travamento na UI e perca de perfomance quando há muitos itens renderizados;
+- No filtro de empresas alterar o componente, adicionando um select ao invés de uma lista de botões, para melhorar a visualização caso tenha diversas empresas;
+- Criar uma camada de cache no front-end utilizando por exemplo o TanStack Query.
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Getting Started
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+To run the project locally, follow these steps:
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+```bash
+# Clone the repository
+git clone https://github.com/rharison/tree_view_companies_assets
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+# Navigate to the project directory
+cd tree_view_companies_assets
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+# Install dependencies
+npm install
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# Start the development server
+npm run dev
 ```
