@@ -14,7 +14,9 @@ export const Header = () => {
 
   return (
     <nav className="bg-[#17192D] flex h-12 justify-between items-center py-3 px-4">
-      <LogoTractian />
+      <a href="https://tractian.com/en" target="_blank" rel="noreferrer">
+        <LogoTractian />
+      </a>
       <div className="flex gap-[10px]">
         {isFetchingCompanies && <CompaniesButtonsSkeleton />}
         {!isFetchingCompanies &&
