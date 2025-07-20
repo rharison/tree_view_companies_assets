@@ -14,11 +14,23 @@ type AssetsContextProps = {
   selectTreeItem: TreeItem | null;
   treeData: TreeItem[];
   isProcessing: boolean;
+  filter: AssetsFilter;
   handleSelectTreeItem: (item: TreeItem) => void;
+  toggleFilter: (filter: keyof AssetsFilter) => void;
+};
+
+type AssetsFilter = {
+  energySensor: boolean;
+  critical: boolean;
 };
 
 type AssetsProviderProps = {
   children: React.ReactNode;
+};
+
+const initialAssetsFilter: AssetsFilter = {
+  energySensor: false,
+  critical: false,
 };
 
 const AssetsContext = createContext<AssetsContextProps | null>(null);
@@ -26,6 +38,7 @@ const AssetsContext = createContext<AssetsContextProps | null>(null);
 export function AssetsProvider({ children }: AssetsProviderProps) {
   const [selectTreeItem, setSelectedTreeItem] = useState<TreeItem | null>(null);
   const [treeData, setTreeData] = useState<TreeItem[]>([]);
+  const [filter, setFilter] = useState<AssetsFilter>(initialAssetsFilter);
   const [isLoading, setIsLoading] = useState(false);
   const [isPending, startTransition] = useTransition();
 
@@ -64,13 +77,22 @@ export function AssetsProvider({ children }: AssetsProviderProps) {
     setSelectedTreeItem(item);
   }
 
+  function toggleFilter(filterKey: keyof AssetsFilter) {
+    setFilter((prev) => ({
+      ...prev,
+      [filterKey]: !prev[filterKey],
+    }));
+  }
+
   return (
     <AssetsContext.Provider
       value={{
         treeData,
         selectTreeItem,
         isProcessing: isLoading || isPending || isFetchingCompanies,
+        filter,
         handleSelectTreeItem,
+        toggleFilter,
       }}
     >
       {children}
