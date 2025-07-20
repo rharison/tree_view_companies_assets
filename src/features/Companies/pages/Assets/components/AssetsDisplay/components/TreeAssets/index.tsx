@@ -31,14 +31,16 @@ export const TreeAssets = () => {
   }
 
   return (
-    <div className="flex flex-col px-1 py-2 gap-1 h-full overflow-auto pb-4 flex-1">
-      {treeData.map((item) => (
-        <TreeAssetsNode
-          key={item.id}
-          item={item}
-          hasExpandableItems={hasExpandableItems}
-        />
-      ))}
+    <div className="flex flex-col px-1 py-2 gap-1 h-full overflow-x-auto overflow-y-auto pb-4">
+      <div className="min-w-max">
+        {treeData.map((item) => (
+          <TreeAssetsNode
+            key={item.id}
+            item={item}
+            hasExpandableItems={hasExpandableItems}
+          />
+        ))}
+      </div>
     </div>
   );
 };
