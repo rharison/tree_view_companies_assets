@@ -1,3 +1,4 @@
+import TopLoadingBar from "@src/commons/components/TopLoadingBar";
 import type { Company } from "@src/commons/types/companies";
 import { useCompaniesService } from "@src/services/companies/useCompaniesService";
 import { createContext, useContext, useEffect, useState } from "react";
@@ -6,6 +7,7 @@ type CompanyContextProps = {
   selectedCompanyId: string | null;
   selectedCompanyName: string | null;
   companies: Company[];
+  isFetchingCompanies: boolean;
   handleSelectCompany: (companyId: string) => void;
 };
 
@@ -56,9 +58,11 @@ export function CompanyProvider({ children }: CompanyProviderProps) {
         selectedCompanyId: selectedCompany?.id || null,
         selectedCompanyName: selectedCompany?.name || null,
         companies,
+        isFetchingCompanies,
         handleSelectCompany,
       }}
     >
+      {isFetchingCompanies && <TopLoadingBar />}
       {children}
     </CompanyContext.Provider>
   );
