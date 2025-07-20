@@ -9,6 +9,7 @@ import {
   useTransition,
 } from "react";
 import { mapTree } from "../utils/mapper";
+import { debounce } from "@src/commons/utils/debounce";
 
 type AssetsContextProps = {
   selectTreeItem: TreeItem | null;
@@ -16,12 +17,14 @@ type AssetsContextProps = {
   isProcessing: boolean;
   filter: AssetsFilter;
   handleSelectTreeItem: (item: TreeItem) => void;
+  handleSearch: (search: string) => void;
   toggleFilter: (filter: keyof AssetsFilter) => void;
 };
 
 type AssetsFilter = {
   energySensor: boolean;
   critical: boolean;
+  search: string;
 };
 
 type AssetsProviderProps = {
@@ -31,6 +34,7 @@ type AssetsProviderProps = {
 const initialAssetsFilter: AssetsFilter = {
   energySensor: false,
   critical: false,
+  search: "",
 };
 
 const AssetsContext = createContext<AssetsContextProps | null>(null);
@@ -84,6 +88,15 @@ export function AssetsProvider({ children }: AssetsProviderProps) {
     }));
   }
 
+  const debouncedHandleSearch = debounce((search: string) => {
+    setFilter((prev) => ({
+      ...prev,
+      search,
+    }));
+  }, 300);
+
+  console.log("search", filter.search);
+
   return (
     <AssetsContext.Provider
       value={{
@@ -93,6 +106,7 @@ export function AssetsProvider({ children }: AssetsProviderProps) {
         filter,
         handleSelectTreeItem,
         toggleFilter,
+        handleSearch: debouncedHandleSearch,
       }}
     >
       {children}
