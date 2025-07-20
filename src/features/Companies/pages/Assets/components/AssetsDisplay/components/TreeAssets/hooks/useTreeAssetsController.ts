@@ -3,11 +3,11 @@ import { useMemo } from "react";
 import { checkHasExpandableItems } from "../../../utils/expandableItems";
 
 export const useTreeAssetsController = () => {
-  const { treeData } = useAssetsContext();
+  const { treeData, isProcessing } = useAssetsContext();
 
   const hasExpandableItems = useMemo(() => {
     return checkHasExpandableItems(treeData);
   }, [treeData]);
 
-  return { treeData, hasExpandableItems };
+  return { treeData, hasExpandableItems, isProcessingTreeData: isProcessing };
 };

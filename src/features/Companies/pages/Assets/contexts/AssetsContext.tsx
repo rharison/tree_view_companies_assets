@@ -1,14 +1,19 @@
-import type { Asset } from "@src/commons/types/assets";
-import type { Location } from "@src/commons/types/locations";
 import type { TreeItem } from "@src/commons/types/tree-view-assets";
 import { useCompanyContext } from "@src/features/Companies/contexts/CompanyContext";
 import { useCompaniesService } from "@src/services/companies/useCompaniesService";
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useTransition,
+} from "react";
 import { mapTree } from "../utils/mapper";
 
 type AssetsContextProps = {
   selectTreeItem: TreeItem | null;
   treeData: TreeItem[];
+  isProcessing: boolean;
   handleSelectTreeItem: (item: TreeItem) => void;
 };
 
@@ -20,24 +25,36 @@ const AssetsContext = createContext<AssetsContextProps | null>(null);
 
 export function AssetsProvider({ children }: AssetsProviderProps) {
   const [selectTreeItem, setSelectedTreeItem] = useState<TreeItem | null>(null);
-  const [locations, setLocations] = useState<Location[]>([]);
-  const [assets, setAssets] = useState<Asset[]>([]);
-  const { selectedCompanyId } = useCompanyContext();
+  const [treeData, setTreeData] = useState<TreeItem[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isPending, startTransition] = useTransition();
+
+  const { selectedCompanyId, isFetchingCompanies } = useCompanyContext();
   const { getLocationsByCompanieId, getAssetsByCompanieId } =
     useCompaniesService();
 
   useEffect(() => {
-    if (!selectedCompanyId) return;
-    (async () => {
+    if (selectedCompanyId) loadData(selectedCompanyId);
+  }, [selectedCompanyId]);
+
+  async function loadData(companyId: string) {
+    try {
+      setIsLoading(true);
+
       const [locations, assets] = await Promise.all([
-        getLocationsByCompanieId(selectedCompanyId),
-        getAssetsByCompanieId(selectedCompanyId),
+        getLocationsByCompanieId(companyId),
+        getAssetsByCompanieId(companyId),
       ]);
 
-      setLocations(locations);
-      setAssets(assets);
-    })();
-  }, [selectedCompanyId]);
+      startTransition(() => {
+        setTreeData(mapTree(locations, assets));
+      });
+    } catch (error) {
+      console.error("Failed to load data:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   function handleSelectTreeItem(item: TreeItem) {
     if (selectTreeItem?.id === item.id) {
@@ -47,15 +64,12 @@ export function AssetsProvider({ children }: AssetsProviderProps) {
     setSelectedTreeItem(item);
   }
 
-  const treeData = useMemo(() => {
-    return mapTree(locations, assets);
-  }, [locations, assets]);
-
   return (
     <AssetsContext.Provider
       value={{
         treeData,
         selectTreeItem,
+        isProcessing: isLoading || isPending || isFetchingCompanies,
         handleSelectTreeItem,
       }}
     >
