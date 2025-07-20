@@ -95,8 +95,6 @@ export function AssetsProvider({ children }: AssetsProviderProps) {
     }));
   }, 300);
 
-  console.log("search", filter.search);
-
   return (
     <AssetsContext.Provider
       value={{
