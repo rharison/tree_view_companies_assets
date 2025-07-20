@@ -62,7 +62,7 @@ export function CompanyProvider({ children }: CompanyProviderProps) {
         handleSelectCompany,
       }}
     >
-      {isFetchingCompanies && <TopLoadingBar />}
+      {!isFetchingCompanies && <TopLoadingBar />}
       {children}
     </CompanyContext.Provider>
   );

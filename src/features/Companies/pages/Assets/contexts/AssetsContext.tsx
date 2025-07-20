@@ -23,6 +23,8 @@ type AssetsContextProps = {
   handleSelectTreeItem: (item: TreeItem) => void;
   handleSearch: (search: string) => void;
   toggleFilter: (filter: keyof AssetsFilter) => void;
+  toggleOpenedTreeItem: (itemId: string) => void;
+  isTreeItemOpened: (itemId: string) => boolean;
 };
 
 type AssetsFilter = {
@@ -48,6 +50,9 @@ export function AssetsProvider({ children }: AssetsProviderProps) {
   const [treeData, setTreeData] = useState<TreeItem[]>([]);
   const [filteredTreeData, setFilteredTreeData] = useState<TreeItem[]>([]);
   const [filter, setFilter] = useState<AssetsFilter>(initialAssetsFilter);
+  const [openedTreeItems, setOpenedTreeItems] = useState<Set<string>>(
+    new Set()
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [isPending, startTransition] = useTransition();
 
@@ -116,9 +121,9 @@ export function AssetsProvider({ children }: AssetsProviderProps) {
 
   function buildPredicateByFilters(filter: AssetsFilter) {
     return (item: TreeItem) => {
-      const matchesSearch = item.name
-        .toLowerCase()
-        .includes(filter.search.toLowerCase());
+      const matchesSearch =
+        !filter.search ||
+        item.name.toLowerCase().includes(filter.search.toLowerCase());
 
       const matchesEnergySensor =
         !filter.energySensor || item.sensorType === SensorType.ENERGY;
@@ -128,6 +133,23 @@ export function AssetsProvider({ children }: AssetsProviderProps) {
 
       return matchesSearch && matchesEnergySensor && matchesCritical;
     };
+  }
+
+  function toggleOpenedTreeItem(itemId: string) {
+    setOpenedTreeItems((prev) => {
+      const newSet = new Set(prev);
+
+      if (newSet.has(itemId)) {
+        newSet.delete(itemId);
+      } else {
+        newSet.add(itemId);
+      }
+      return newSet;
+    });
+  }
+
+  function isTreeItemOpened(itemId: string) {
+    return openedTreeItems.has(itemId);
   }
 
   return (
@@ -141,6 +163,8 @@ export function AssetsProvider({ children }: AssetsProviderProps) {
         handleSelectTreeItem,
         toggleFilter,
         handleSearch: debouncedHandleSearch,
+        isTreeItemOpened,
+        toggleOpenedTreeItem,
       }}
     >
       {children}
