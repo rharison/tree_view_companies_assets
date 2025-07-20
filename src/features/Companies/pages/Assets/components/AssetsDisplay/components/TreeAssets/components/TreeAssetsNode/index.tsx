@@ -14,7 +14,7 @@ type TreeAssetsNodeProps = {
   level?: number;
 };
 
-const IDENTITY_SIZE_PIXEL = 14;
+const IDENTITY_SIZE = 14;
 
 export const TreeAssetsNode = ({
   item,
@@ -49,7 +49,7 @@ export const TreeAssetsNode = ({
         <Fade in={open}>
           <div
             style={{
-              marginLeft: `${IDENTITY_SIZE_PIXEL * level}px`,
+              marginLeft: `${IDENTITY_SIZE * level}px`,
             }}
           >
             {item.children.map((child) => (
