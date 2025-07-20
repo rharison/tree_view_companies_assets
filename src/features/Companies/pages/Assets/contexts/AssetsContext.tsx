@@ -5,11 +5,14 @@ import {
   createContext,
   useContext,
   useEffect,
+  useMemo,
   useState,
   useTransition,
 } from "react";
 import { mapTree } from "../utils/mapper";
 import { debounce } from "@src/commons/utils/debounce";
+import { AssetStatus, SensorType } from "@src/commons/types/assets";
+import { filterTree } from "../utils/filter";
 
 type AssetsContextProps = {
   selectTreeItem: TreeItem | null;
@@ -42,6 +45,7 @@ const AssetsContext = createContext<AssetsContextProps | null>(null);
 export function AssetsProvider({ children }: AssetsProviderProps) {
   const [selectTreeItem, setSelectedTreeItem] = useState<TreeItem | null>(null);
   const [treeData, setTreeData] = useState<TreeItem[]>([]);
+  const [filteredTreeData, setFilteredTreeData] = useState<TreeItem[]>([]);
   const [filter, setFilter] = useState<AssetsFilter>(initialAssetsFilter);
   const [isLoading, setIsLoading] = useState(false);
   const [isPending, startTransition] = useTransition();
@@ -53,6 +57,16 @@ export function AssetsProvider({ children }: AssetsProviderProps) {
   useEffect(() => {
     if (selectedCompanyId) loadData(selectedCompanyId);
   }, [selectedCompanyId]);
+
+  useEffect(() => {
+    if (!hasAppliedFilters) return;
+
+    startTransition(() => {
+      const predicate = buildPredicateByFilters(filter);
+      const result = filterTree(treeData, predicate);
+      setFilteredTreeData(result);
+    });
+  }, [treeData, filter]);
 
   async function loadData(companyId: string) {
     try {
@@ -95,10 +109,30 @@ export function AssetsProvider({ children }: AssetsProviderProps) {
     }));
   }, 300);
 
+  const hasAppliedFilters = useMemo(() => {
+    return Object.values(filter).some((value) => value);
+  }, [filter]);
+
+  function buildPredicateByFilters(filter: AssetsFilter) {
+    return (item: TreeItem) => {
+      const matchesSearch = item.name
+        .toLowerCase()
+        .includes(filter.search.toLowerCase());
+
+      const matchesEnergySensor =
+        !filter.energySensor || item.sensorType === SensorType.ENERGY;
+
+      const matchesCritical =
+        !filter.critical || item.status === AssetStatus.ALERT;
+
+      return matchesSearch && matchesEnergySensor && matchesCritical;
+    };
+  }
+
   return (
     <AssetsContext.Provider
       value={{
-        treeData,
+        treeData: hasAppliedFilters ? filteredTreeData : treeData,
         selectTreeItem,
         isProcessing: isLoading || isPending || isFetchingCompanies,
         filter,
