@@ -1,11 +1,9 @@
-import Alert from "@src/assets/icons/Alert";
-import Thuderbolt from "@src/assets/icons/Thuderbolt";
 import { useCompanyContext } from "../../../../contexts/CompanyContext";
+import { AssetsProvider } from "../../contexts/AssetsContext";
 import { AssetDetails } from "../AssetDetails";
-import { FilterButton } from "../FilterButton";
+import { Filters } from "./components/Filters";
 import { InputSearch } from "./components/InputSearch";
 import { TreeAssets } from "./components/TreeAssets";
-import { AssetsProvider } from "../../contexts/AssetsContext";
 
 export const AssetsDisplay = () => {
   const { selectedCompanyName } = useCompanyContext();
@@ -26,18 +24,7 @@ export const AssetsDisplay = () => {
                 </span>
               )}
             </div>
-            <div className="flex items-center gap-2">
-              <FilterButton
-                onClick={console.log}
-                label="Sensor de Energia"
-                icon={<Thuderbolt active={false} />}
-              />
-              <FilterButton
-                onClick={console.log}
-                label="Crítico"
-                icon={<Alert active={false} />}
-              />
-            </div>
+            <Filters />
           </header>
           <div className="flex h-full gap-2 overflow-hidden">
             <div className="flex flex-col w-[40%] h-full border border-[#D8DFE6] rounded-[2px]">
