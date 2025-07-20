@@ -19,6 +19,7 @@ type AssetsContextProps = {
   treeData: TreeItem[];
   isProcessing: boolean;
   filter: AssetsFilter;
+  hasAppliedFilters: boolean;
   handleSelectTreeItem: (item: TreeItem) => void;
   handleSearch: (search: string) => void;
   toggleFilter: (filter: keyof AssetsFilter) => void;
@@ -136,6 +137,7 @@ export function AssetsProvider({ children }: AssetsProviderProps) {
         selectTreeItem,
         isProcessing: isLoading || isPending || isFetchingCompanies,
         filter,
+        hasAppliedFilters,
         handleSelectTreeItem,
         toggleFilter,
         handleSearch: debouncedHandleSearch,

@@ -27,7 +27,7 @@ export const AssetsDisplay = () => {
             <Filters />
           </header>
           <div className="flex h-full gap-2 overflow-hidden">
-            <div className="flex flex-col w-[40%] h-full border border-[#D8DFE6] rounded-[2px]">
+            <div className="flex flex-col w-[40%] overflow-auto h-full border border-[#D8DFE6] rounded-[2px]">
               <InputSearch />
               <TreeAssets />
             </div>
