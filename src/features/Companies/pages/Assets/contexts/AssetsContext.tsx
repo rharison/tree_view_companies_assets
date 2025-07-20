@@ -12,7 +12,7 @@ import {
 import { mapTree } from "../utils/mapper";
 import { debounce } from "@src/commons/utils/debounce";
 import { AssetStatus, SensorType } from "@src/commons/types/assets";
-import { filterTree } from "../utils/filter";
+import { filterTree, isPresentInTree } from "../utils/filter";
 
 type AssetsContextProps = {
   selectTreeItem: TreeItem | null;
@@ -152,10 +152,24 @@ export function AssetsProvider({ children }: AssetsProviderProps) {
     return openedTreeItems.has(itemId);
   }
 
+  const treeDataToUse = useMemo(() => {
+    return hasAppliedFilters ? filteredTreeData : treeData;
+  }, [hasAppliedFilters, treeData, filteredTreeData]);
+
+  useEffect(() => {
+    if (!selectTreeItem) return;
+
+    const isPresent = isPresentInTree(treeDataToUse, selectTreeItem.id);
+
+    if (!isPresent) {
+      setSelectedTreeItem(null);
+    }
+  }, [selectTreeItem, treeDataToUse]);
+
   return (
     <AssetsContext.Provider
       value={{
-        treeData: hasAppliedFilters ? filteredTreeData : treeData,
+        treeData: treeDataToUse,
         selectTreeItem,
         isProcessing: isLoading || isPending || isFetchingCompanies,
         filter,
